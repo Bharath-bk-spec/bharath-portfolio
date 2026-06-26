@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>College Enquiry Chatbot | Bharath B K</title>
+<meta name="description" content="College Enquiry Chatbot – AI/NLP Mini Project by Bharath B K, St. Philomena College (Autonomous), Puttur"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --bg:#09090f;--bg2:#0f0f1a;--bg3:#13131f;
+  --indigo:#6366f1;--violet:#8b5cf6;--cyan:#22d3ee;--pink:#ec4899;--green:#22c55e;
+  --white:#f0f0ff;--muted:#94a3b8;
+  --glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08);
+  --grad:linear-gradient(135deg,#6366f1,#8b5cf6,#22d3ee);
+  --transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--indigo);border-radius:2px}
+#scroll-progress{position:fixed;top:0;left:0;height:3px;background:var(--grad);z-index:9999;width:0%;transition:width 0.1s}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;height:66px;display:flex;align-items:center;justify-content:space-between;background:rgba(9,9,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border)}
+.nav-back{display:flex;align-items:center;gap:0.5rem;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:600;transition:var(--transition)}
+.nav-back:hover{color:var(--white)}
+.nav-title{font-family:"Poppins",sans-serif;font-size:1rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-badge{padding:0.3rem 0.9rem;border-radius:100px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);font-size:0.75rem;font-weight:700;color:var(--indigo)}
+
+/* HERO */
+.hero{padding-top:66px;background:linear-gradient(180deg,rgba(99,102,241,0.06) 0%,transparent 100%);border-bottom:1px solid var(--glass-border)}
+.hero-inner{max-width:960px;margin:0 auto;padding:4rem 2rem 3rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.2rem}
+.hero-label{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--indigo)}
+.hero-title{font-family:"Poppins",sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.1;letter-spacing:-1.5px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{color:var(--muted);font-size:1rem;max-width:640px;line-height:1.8}
+.hero-tags{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;margin-top:0.5rem}
+.hero-tag{padding:0.35rem 0.9rem;border-radius:8px;font-size:0.78rem;font-weight:700;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);color:var(--indigo)}
+.hero-tag.cyan{background:rgba(34,211,238,0.08);border-color:rgba(34,211,238,0.2);color:var(--cyan)}
+.hero-tag.violet{background:rgba(139,92,246,0.08);border-color:rgba(139,92,246,0.2);color:var(--violet)}
+.hero-tag.pink{background:rgba(236,72,153,0.08);border-color:rgba(236,72,153,0.2);color:var(--pink)}
+.hero-tag.green{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.2);color:var(--green)}
+
+/* MAIN */
+main{max-width:960px;margin:0 auto;padding:4rem 2rem;display:flex;flex-direction:column;gap:5rem}
+
+/* SECTION HEADER */
+.section-label{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--indigo);margin-bottom:0.6rem}
+.section-title{font-family:"Poppins",sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;margin-bottom:0.5rem;line-height:1.2}
+.section-divider{width:60px;height:3px;border-radius:2px;background:var(--grad);margin:1rem 0 1.8rem}
+
+/* CARDS GRID */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.info-card{padding:1.8rem;border-radius:16px;background:var(--glass);border:1px solid var(--glass-border);transition:var(--transition)}
+.info-card:hover{border-color:rgba(99,102,241,0.3);transform:translateY(-4px);box-shadow:0 20px 40px rgba(99,102,241,0.1)}
+.info-card-icon{font-size:2rem;margin-bottom:1rem}
+.info-card-title{font-family:"Poppins",sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.75rem}
+.info-card-body{color:var(--muted);font-size:0.88rem;line-height:1.8}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.team-card{padding:1.5rem;border-radius:16px;background:var(--glass);border:1px solid var(--glass-border);text-align:center;transition:var(--transition)}
+.team-card:hover{border-color:rgba(99,102,241,0.3);transform:translateY(-4px)}
+.team-avatar{width:64px;height:64px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:"Poppins",sans-serif;font-size:1.4rem;font-weight:800;color:#fff;margin:0 auto 1rem}
+.team-name{font-family:"Poppins",sans-serif;font-size:0.92rem;font-weight:700;margin-bottom:0.2rem}
+.team-id{font-size:0.75rem;color:var(--indigo);font-weight:600;margin-bottom:0.4rem}
+.team-role{font-size:0.78rem;color:var(--muted)}
+
+/* GUIDE CARDS */
+.guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.guide-card{padding:1.5rem;border-radius:16px;background:var(--glass);border:1px solid var(--glass-border);display:flex;gap:1rem;align-items:flex-start;transition:var(--transition)}
+.guide-card:hover{border-color:rgba(99,102,241,0.3)}
+.guide-icon{width:48px;height:48px;border-radius:12px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.guide-name{font-family:"Poppins",sans-serif;font-size:0.92rem;font-weight:700;margin-bottom:0.2rem}
+.guide-role{font-size:0.78rem;color:var(--indigo);font-weight:600;margin-bottom:0.2rem}
+.guide-dept{font-size:0.75rem;color:var(--muted)}
+
+/* FLOW STEPS */
+.flow-steps{display:flex;flex-direction:column;gap:0;position:relative;padding-left:2rem}
+.flow-steps::before{content:"";position:absolute;left:0.55rem;top:1rem;bottom:1rem;width:2px;background:linear-gradient(to bottom,var(--indigo),var(--cyan));border-radius:2px}
+.flow-step{display:flex;gap:1.5rem;align-items:flex-start;padding:1.2rem 0;position:relative}
+.flow-step-num{width:28px;height:28px;border-radius:50%;background:var(--grad);color:#fff;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:-2.55rem;box-shadow:0 0 12px rgba(99,102,241,0.5)}
+.flow-step-content{padding-top:0.2rem}
+.flow-step-title{font-family:"Poppins",sans-serif;font-size:0.92rem;font-weight:700;margin-bottom:0.3rem}
+.flow-step-desc{color:var(--muted);font-size:0.85rem;line-height:1.7}
+
+/* MODULES */
+.modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.module-card{padding:1.5rem;border-radius:14px;background:var(--glass);border:1px solid var(--glass-border);transition:var(--transition);position:relative;overflow:hidden}
+.module-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:0;transition:var(--transition)}
+.module-card:hover::before{opacity:1}
+.module-card:hover{border-color:rgba(99,102,241,0.3);transform:translateY(-3px)}
+.module-num{font-size:0.65rem;font-weight:800;letter-spacing:2px;color:var(--indigo);margin-bottom:0.5rem;text-transform:uppercase}
+.module-name{font-family:"Poppins",sans-serif;font-size:0.92rem;font-weight:700;margin-bottom:0.75rem}
+.module-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem}
+.module-list li{font-size:0.82rem;color:var(--muted);display:flex;align-items:flex-start;gap:0.5rem}
+.module-list li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--indigo);flex-shrink:0;margin-top:6px}
+
+/* ARCH LAYERS */
+.arch-layers{display:flex;flex-direction:column;gap:0}
+.arch-layer{padding:1.5rem 2rem;border-left:3px solid transparent;transition:var(--transition);border-radius:0 12px 12px 0;margin-bottom:0.5rem}
+.arch-layer:nth-child(1){border-color:var(--indigo);background:rgba(99,102,241,0.06)}
+.arch-layer:nth-child(2){border-color:var(--violet);background:rgba(139,92,246,0.06)}
+.arch-layer:nth-child(3){border-color:var(--cyan);background:rgba(34,211,238,0.06)}
+.arch-layer:nth-child(4){border-color:var(--pink);background:rgba(236,72,153,0.06)}
+.arch-layer:hover{transform:translateX(6px)}
+.arch-layer-title{font-family:"Poppins",sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:0.3rem}
+.arch-layer-sub{font-size:0.78rem;color:var(--indigo);font-weight:600;margin-bottom:0.5rem}
+.arch-layer-desc{font-size:0.85rem;color:var(--muted);line-height:1.7}
+
+/* INTENT TABLE */
+.intent-table{width:100%;border-collapse:collapse;font-size:0.84rem}
+.intent-table th{background:rgba(99,102,241,0.12);color:var(--white);font-family:"Poppins",sans-serif;font-weight:700;padding:0.85rem 1rem;text-align:left;font-size:0.8rem;letter-spacing:0.5px}
+.intent-table th:first-child{border-radius:10px 0 0 0}
+.intent-table th:last-child{border-radius:0 10px 0 0}
+.intent-table td{padding:0.8rem 1rem;border-bottom:1px solid var(--glass-border);color:var(--muted);line-height:1.5}
+.intent-table tr:hover td{background:rgba(99,102,241,0.04);color:var(--white)}
+.intent-table tr:last-child td{border-bottom:none}
+.intent-tag{display:inline-block;padding:0.2rem 0.6rem;border-radius:6px;font-size:0.72rem;font-weight:700;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);color:var(--indigo);font-family:monospace}
+
+/* TECH STACK */
+.tech-grid{display:flex;flex-wrap:wrap;gap:1rem}
+.tech-item{display:flex;align-items:center;gap:0.6rem;padding:0.8rem 1.2rem;border-radius:12px;background:var(--glass);border:1px solid var(--glass-border);transition:var(--transition)}
+.tech-item:hover{border-color:rgba(99,102,241,0.35);transform:translateY(-3px)}
+.tech-icon{font-size:1.3rem}
+.tech-name{font-size:0.85rem;font-weight:600}
+
+/* OUTCOMES */
+.outcomes-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.outcome-item{display:flex;align-items:flex-start;gap:0.9rem;padding:1.1rem 1.3rem;border-radius:12px;background:var(--glass);border:1px solid var(--glass-border);transition:var(--transition)}
+.outcome-item:hover{border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.04)}
+.outcome-check{width:24px;height:24px;border-radius:6px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;color:var(--green)}
+.outcome-text{font-size:0.85rem;color:var(--muted);line-height:1.6}
+
+/* SCOPE LIST */
+.scope-list{display:flex;flex-direction:column;gap:1rem}
+.scope-item{display:flex;align-items:flex-start;gap:1rem;padding:1.2rem 1.5rem;border-radius:12px;background:var(--glass);border:1px solid var(--glass-border);transition:var(--transition)}
+.scope-item:hover{border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.05)}
+.scope-dot{width:10px;height:10px;border-radius:50%;background:var(--grad);flex-shrink:0;margin-top:5px;box-shadow:0 0 8px rgba(99,102,241,0.6)}
+.scope-text{font-size:0.9rem;color:var(--muted);line-height:1.7}
+.scope-text strong{color:var(--white);font-weight:600}
+
+/* CTA */
+.cta-bar{padding:3rem;border-radius:20px;background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(139,92,246,0.08),rgba(34,211,238,0.06));border:1px solid rgba(99,102,241,0.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+.cta-text h3{font-family:"Poppins",sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:0.4rem}
+.cta-text p{color:var(--muted);font-size:0.9rem}
+.cta-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{padding:0.75rem 1.5rem;border-radius:10px;font-size:0.88rem;font-weight:700;background:var(--grad);color:#fff;text-decoration:none;border:none;cursor:pointer;transition:var(--transition);box-shadow:0 0 25px rgba(99,102,241,0.3);display:inline-flex;align-items:center;gap:0.5rem}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(99,102,241,0.5)}
+.btn-outline{padding:0.75rem 1.5rem;border-radius:10px;font-size:0.88rem;font-weight:700;background:transparent;color:var(--white);text-decoration:none;border:1px solid var(--glass-border);cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:0.5rem}
+.btn-outline:hover{border-color:var(--indigo);background:rgba(99,102,241,0.08)}
+
+/* FOOTER */
+footer{text-align:center;padding:2rem;border-top:1px solid var(--glass-border);color:var(--muted);font-size:0.82rem}
+footer a{color:var(--indigo);text-decoration:none}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:720px){
+  .info-grid,.modules-grid,.guide-grid,.outcomes-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
+  .cta-bar{flex-direction:column;text-align:center}
+  .cta-btns{justify-content:center}
+  nav{padding:0 1.25rem}
+  .nav-title{display:none}
+  main{padding:3rem 1.25rem;gap:4rem}
+  .hero-inner{padding:3rem 1.25rem 2rem}
+}
+@media(max-width:480px){
+  .team-grid{grid-template-columns:1fr}
+  .intent-table{font-size:0.75rem}
+  .intent-table td,.intent-table th{padding:0.6rem 0.7rem}
+}
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-back"><span>←</span> Back to Portfolio</a>
+  <span class="nav-title">College Enquiry Chatbot</span>
+  <span class="nav-badge">Mini Project</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner reveal">
+    <div class="hero-label">BCA (AI & ML) Mini Project · Academic Year 2025–26</div>
+    <h1 class="hero-title">College Enquiry<br/><span class="grad-text">Chatbot</span></h1>
+    <p class="hero-sub">An AI-powered web application that automates college enquiry handling at St. Philomena College (Autonomous), Puttur — using NLP, TF-IDF vectorization, and cosine similarity for intelligent, 24×7 instant responses.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Python</span>
+      <span class="hero-tag cyan">Flask</span>
+      <span class="hero-tag violet">NLP / NLTK</span>
+      <span class="hero-tag pink">TF-IDF</span>
+      <span class="hero-tag">Scikit-learn</span>
+      <span class="hero-tag green">AI Web App</span>
+      <span class="hero-tag cyan">JSON Knowledge Base</span>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- OVERVIEW -->
+  <section class="reveal">
+    <div class="section-label">Project Overview</div>
+    <h2 class="section-title">What is the <span class="grad-text">Chatbot?</span></h2>
+    <div class="section-divider"></div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">🎯</div>
+        <div class="info-card-title">The Problem</div>
+        <div class="info-card-body">Traditional college websites provide information through static pages and PDFs, requiring manual navigation. During admission periods, colleges receive many repetitive queries about courses, fees, hostels, and scholarships — increasing administrative workload and delaying responses.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">💡</div>
+        <div class="info-card-title">Our Solution</div>
+        <div class="info-card-body">An AI-based chatbot that acts as a virtual assistant — interacting in natural language to provide instant answers about admissions, courses, fees, hostel, placements, scholarships, and more. Operates 24×7 without human intervention.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🏛</div>
+        <div class="info-card-title">Institution</div>
+        <div class="info-card-body">Developed at the Department of Computer Science, St. Philomena College (Autonomous), Puttur — submitted to Mangalore University as a Mini Project for the BCA (AI & ML) degree during Academic Year 2025–26.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📂</div>
+        <div class="info-card-title">Category</div>
+        <div class="info-card-body">Artificial Intelligence / Web Application. Built using Python and Flask for backend, HTML5, CSS3, JavaScript for frontend, NLTK & Scikit-learn for NLP, and a JSON dataset as the knowledge base.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="reveal">
+    <div class="section-label">Project Team</div>
+    <h2 class="section-title">Meet the <span class="grad-text">Team</span></h2>
+    <div class="section-divider"></div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">BBK</div>
+        <div class="team-name">Bharath B K</div>
+        <div class="team-id">U05PH23C0180</div>
+        <div class="team-role">III BCA (AI & ML)</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">DKP</div>
+        <div class="team-name">Dhanush Kashyap P S</div>
+        <div class="team-id">U05PH23C0166</div>
+        <div class="team-role">III BCA (AI & ML)</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">TAV</div>
+        <div class="team-name">Theekshan A V</div>
+        <div class="team-id">U05PH23C0170</div>
+        <div class="team-role">III BCA (AI & ML)</div>
+      </div>
+    </div>
+    <div style="margin-top:2rem">
+      <div class="section-label" style="margin-bottom:1rem">Guided By</div>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <div class="guide-icon">👩‍🏫</div>
+          <div>
+            <div class="guide-name">Mrs. Suraksha S</div>
+            <div class="guide-role">Internal Guide / Project Supervisor</div>
+            <div class="guide-dept">Asst. Professor, Dept. of Computer Science</div>
+          </div>
+        </div>
+        <div class="guide-card">
+          <div class="guide-icon">🎓</div>
+          <div>
+            <div class="guide-name">Dr. Vinayachandra K</div>
+            <div class="guide-role">Head of Department</div>
+            <div class="guide-dept">Head & Asst. Professor, Dept. of Computer Science</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="reveal">
+    <div class="section-label">Processing Pipeline</div>
+    <h2 class="section-title">How It <span class="grad-text">Works</span></h2>
+    <div class="section-divider"></div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-num">1</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">User Sends a Query</div>
+          <div class="flow-step-desc">The user types a question in the chat interface (e.g. "What are the BCA fees?" or "Is hostel available?"). The frontend sends this to the Flask /chat API endpoint via an HTTP POST request.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">2</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">Query Preprocessing</div>
+          <div class="flow-step-desc">The text is converted to lowercase, special characters removed, and tokenized using NLTK. Stop-words are eliminated and lemmatization converts words to their base forms — improving matching accuracy.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">3</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">TF-IDF Vectorization</div>
+          <div class="flow-step-desc">The preprocessed query is transformed into a TF-IDF vector using Scikit-learn's TfidfVectorizer, which is then compared against the pre-built corpus of all intent patterns from the JSON knowledge base.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">4</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">Cosine Similarity — Intent Detection</div>
+          <div class="flow-step-desc">Cosine similarity scores are calculated between the query vector and all pattern vectors. The intent with the highest similarity score (above threshold 0.25) is selected as the predicted intent category.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">5</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">Response Generation & Display</div>
+          <div class="flow-step-desc">A suitable response is randomly selected from the matched intent's responses array in the JSON knowledge base. If no intent matches, a fallback response is returned. The response is sent to the frontend and displayed instantly.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEM ARCHITECTURE -->
+  <section class="reveal">
+    <div class="section-label">System Design</div>
+    <h2 class="section-title">System <span class="grad-text">Architecture</span></h2>
+    <div class="section-divider"></div>
+    <div class="arch-layers">
+      <div class="arch-layer">
+        <div class="arch-layer-title">Application Layer</div>
+        <div class="arch-layer-sub">College Enquiry Chatbot Interface</div>
+        <div class="arch-layer-desc">The top layer where users interact through the Web/App Chat Window. Built with HTML5, CSS3, and JavaScript — sends queries to the Flask API and displays chatbot responses dynamically.</div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-title">Presentation Layer</div>
+        <div class="arch-layer-sub">User Interface & Input Handling</div>
+        <div class="arch-layer-desc">Displays messages to the user and accepts user queries (fees, courses, admissions, etc.). Responsible for rendering the chat bubbles, quick topic buttons, typing indicators, and timestamps.</div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-title">Processing Layer</div>
+        <div class="arch-layer-sub">NLP / Query Processing Engine</div>
+        <div class="arch-layer-desc">The intelligence layer — handles tokenization, stop-word removal, lemmatization (NLTK), TF-IDF vectorization, cosine similarity intent matching, and response selection using Python & Scikit-learn.</div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-title">Data Layer</div>
+        <div class="arch-layer-sub">JSON File Storage — Knowledge Base</div>
+        <div class="arch-layer-desc">Stores all college information — courses, fees, admission details, hostel, placements — as structured intents (tag, patterns, responses) in intents.json. Chatbot reads and retrieves data directly from this file.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULES -->
+  <section class="reveal">
+    <div class="section-label">Modular Design</div>
+    <h2 class="section-title">System <span class="grad-text">Modules</span></h2>
+    <div class="section-divider"></div>
+    <div class="modules-grid">
+      <div class="module-card">
+        <div class="module-num">Module 01</div>
+        <div class="module-name">User Interaction Module</div>
+        <ul class="module-list">
+          <li>Chat interface (browser-based)</li>
+          <li>Input handler — captures user queries</li>
+          <li>Response display — renders bot replies</li>
+          <li>Quick topic buttons for easy navigation</li>
+        </ul>
+      </div>
+      <div class="module-card">
+        <div class="module-num">Module 02</div>
+        <div class="module-name">Query Processing Module</div>
+        <ul class="module-list">
+          <li>Lowercase conversion</li>
+          <li>Special character removal</li>
+          <li>Tokenization of input text</li>
+          <li>Stop-word removal for clean input</li>
+        </ul>
+      </div>
+      <div class="module-card">
+        <div class="module-num">Module 03</div>
+        <div class="module-name">NLP Processing Module</div>
+        <ul class="module-list">
+          <li>Lemmatization using NLTK WordNetLemmatizer</li>
+          <li>Keyword extraction from user queries</li>
+          <li>Word normalization for better matching</li>
+          <li>Preprocessing pipeline using NLTK libraries</li>
+        </ul>
+      </div>
+      <div class="module-card">
+        <div class="module-num">Module 04</div>
+        <div class="module-name">Intent Detection Module</div>
+        <ul class="module-list">
+          <li>TF-IDF vectorization (Scikit-learn)</li>
+          <li>Cosine similarity scoring</li>
+          <li>Threshold-based intent classification (0.25)</li>
+          <li>Best-match intent selection</li>
+        </ul>
+      </div>
+      <div class="module-card">
+        <div class="module-num">Module 05</div>
+        <div class="module-name">Response Generation Module</div>
+        <ul class="module-list">
+          <li>Response retrieval from JSON knowledge base</li>
+          <li>Random response selection from pool</li>
+          <li>Response formatting for display</li>
+          <li>Fallback handling for unknown queries</li>
+        </ul>
+      </div>
+      <div class="module-card">
+        <div class="module-num">Module 06</div>
+        <div class="module-name">Knowledge Base Module</div>
+        <ul class="module-list">
+          <li>intents.json — primary data store</li>
+          <li>14+ intent categories covering college info</li>
+          <li>Tag, patterns, and responses structure</li>
+          <li>Easy manual updating and maintenance</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTENT CATEGORIES -->
+  <section class="reveal">
+    <div class="section-label">Knowledge Base</div>
+    <h2 class="section-title">Intent <span class="grad-text">Categories</span></h2>
+    <div class="section-divider"></div>
+    <div style="overflow-x:auto;border-radius:12px;border:1px solid var(--glass-border)">
+      <table class="intent-table">
+        <thead>
+          <tr>
+            <th>Intent Tag</th>
+            <th>Description</th>
+            <th>Example Query</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="intent-tag">greeting</span></td><td>Handles greetings and welcome messages</td><td>"Hello", "Hi", "Good morning"</td></tr>
+          <tr><td><span class="intent-tag">college_about</span></td><td>General college information & history</td><td>"Tell me about the college"</td></tr>
+          <tr><td><span class="intent-tag">ug_courses</span></td><td>Undergraduate programme details</td><td>"What UG courses are available?"</td></tr>
+          <tr><td><span class="intent-tag">pg_courses</span></td><td>Postgraduate programme details</td><td>"What PG courses are offered?"</td></tr>
+          <tr><td><span class="intent-tag">bca_course</span></td><td>BCA course — AI & ML, Data Analytics</td><td>"Tell me about BCA"</td></tr>
+          <tr><td><span class="intent-tag">admission_process</span></td><td>Admission procedure & online application</td><td>"How to apply for admission?"</td></tr>
+          <tr><td><span class="intent-tag">fees_general</span></td><td>Fee structure information</td><td>"What are the fees?"</td></tr>
+          <tr><td><span class="intent-tag">scholarship</span></td><td>Scholarship & financial aid details</td><td>"Any scholarships available?"</td></tr>
+          <tr><td><span class="intent-tag">hostel</span></td><td>Hostel facilities — boys & girls</td><td>"Is hostel available?"</td></tr>
+          <tr><td><span class="intent-tag">library</span></td><td>Library resources & hours</td><td>"Tell me about the library"</td></tr>
+          <tr><td><span class="intent-tag">placements</span></td><td>Placement cell & campus recruitment</td><td>"Campus placement details"</td></tr>
+          <tr><td><span class="intent-tag">contact_info</span></td><td>Phone, email & address details</td><td>"College phone number"</td></tr>
+          <tr><td><span class="intent-tag">departments</span></td><td>Department listing & details</td><td>"Which departments are there?"</td></tr>
+          <tr><td><span class="intent-tag">fallback</span></td><td>Handles unrecognized queries gracefully</td><td>Any unmatched input</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SCOPE -->
+  <section class="reveal">
+    <div class="section-label">Coverage</div>
+    <h2 class="section-title">Scope of the <span class="grad-text">Application</span></h2>
+    <div class="section-divider"></div>
+    <div class="scope-list">
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text"><strong>Admissions & Courses</strong> — Handles queries for all UG (BA, BSc, BCom, BBA, BCA, BSW) and PG (MSc, MCom, MA, MSW) programmes including eligibility, duration, fees, and specializations.</div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text"><strong>Facilities & Infrastructure</strong> — Answers questions about library (55,000+ books), science labs, computer labs, ICT-enabled smart classrooms, auditorium, gymnasium, and Wi-Fi campus.</div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text"><strong>Hostel & Campus Life</strong> — Provides details on separate boys & girls hostels with Wi-Fi, CCTV, purified water, steam cooking, and sports grounds (3 large grounds).</div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text"><strong>Scholarships & Financial Aid</strong> — Covers merit-based scholarships, government schemes (SC/ST/OBC Post-Matric), minority scholarships, and sports quota fee concessions.</div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text"><strong>Placements & Career</strong> — Shares placement cell overview, NIRF 2025 data (53 students placed, median ₹2.52 LPA), soft skills programs, and campus recruitment drives.</div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text"><strong>Future Enhancements</strong> — Planned expansions include multilingual support, voice-based interaction, speech recognition, mobile app (Android/iOS), WhatsApp/Telegram integration, and deep learning models.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="reveal">
+    <div class="section-label">Built With</div>
+    <h2 class="section-title">Tech <span class="grad-text">Stack</span></h2>
+    <div class="section-divider"></div>
+    <div class="tech-grid">
+      <div class="tech-item"><span class="tech-icon">🐍</span><span class="tech-name">Python 3.x</span></div>
+      <div class="tech-item"><span class="tech-icon">🌐</span><span class="tech-name">Flask Framework</span></div>
+      <div class="tech-item"><span class="tech-icon">🧠</span><span class="tech-name">NLTK</span></div>
+      <div class="tech-item"><span class="tech-icon">⚗️</span><span class="tech-name">spaCy</span></div>
+      <div class="tech-item"><span class="tech-icon">📊</span><span class="tech-name">Scikit-learn</span></div>
+      <div class="tech-item"><span class="tech-icon">📄</span><span class="tech-name">HTML5 & CSS3</span></div>
+      <div class="tech-item"><span class="tech-icon">⚡</span><span class="tech-name">JavaScript</span></div>
+      <div class="tech-item"><span class="tech-icon">🗂️</span><span class="tech-name">JSON Knowledge Base</span></div>
+      <div class="tech-item"><span class="tech-icon">💻</span><span class="tech-name">VS Code</span></div>
+      <div class="tech-item"><span class="tech-icon">🔬</span><span class="tech-name">TF-IDF Vectorization</span></div>
+      <div class="tech-item"><span class="tech-icon">📐</span><span class="tech-name">Cosine Similarity</span></div>
+      <div class="tech-item"><span class="tech-icon">🪟</span><span class="tech-name">Windows 10/11</span></div>
+    </div>
+  </section>
+
+  <!-- LEARNING OUTCOMES -->
+  <section class="reveal">
+    <div class="section-label">Key Takeaways</div>
+    <h2 class="section-title">Learning <span class="grad-text">Outcomes</span></h2>
+    <div class="section-divider"></div>
+    <div class="outcomes-grid">
+      <div class="outcome-item"><div class="outcome-check">✓</div><div class="outcome-text">Gained practical experience in Python programming and Flask web framework development</div></div>
+      <div class="outcome-item"><div class="outcome-check">✓</div><div class="outcome-text">Implemented NLP techniques — tokenization, lemmatization, stop-word removal using NLTK</div></div>
+      <div class="outcome-item"><div class="outcome-check">✓</div><div class="outcome-text">Applied TF-IDF vectorization and cosine similarity for real-world intent classification</div></div>
+      <div class="outcome-item"><div class="outcome-check">✓</div><div class="outcome-text">Developed responsive frontend using HTML5, CSS3, and JavaScript with Flask integration</div></div>
+      <div class="outcome-item"><div class="outcome-check">✓</div><div class="outcome-text">Learned modular system design, software architecture, and API communication patterns</div></div>
+      <div class="outcome-item"><div class="outcome-check">✓</div><div class="outcome-text">Understood JSON data structures and their use as lightweight knowledge repositories</div></div>
+      <div class="outcome-item"><div class="outcome-check">✓</div><div class="outcome-text">Enhanced debugging, testing, and technical documentation preparation skills</div></div>
+      <div class="outcome-item"><div class="outcome-check">✓</div><div class="outcome-text">Applied Artificial Intelligence in the real-world educational domain for automation</div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-bar reveal">
+    <div class="cta-text">
+      <h3>Interested in collaborating?</h3>
+      <p>Open to internships, AI/ML projects, and full-stack development opportunities.</p>
+    </div>
+    <div class="cta-btns">
+      <a href="index.html#contact" class="btn-primary">✉ Get In Touch</a>
+      <a href="index.html#projects" class="btn-outline">← All Projects</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Designed &amp; Built by <a href="index.html">Bharath B K</a> &nbsp;·&nbsp; BCA (AI &amp; ML) · St. Philomena College (A), Puttur &nbsp;·&nbsp; 2026</p>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll(".reveal");
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); ro.unobserve(e.target); } });
+}, {threshold:0.08});
+reveals.forEach(r => ro.observe(r));
+
+window.addEventListener("scroll", () => {
+  const s = document.documentElement.scrollTop;
+  const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  document.getElementById("scroll-progress").style.width = (s/h*100) + "%";
+}, {passive:true});
+</script>
+</body>
+</html>
